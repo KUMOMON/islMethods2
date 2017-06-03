@@ -110,6 +110,18 @@ vector<int> TactNumberAfterWhichDocumentIsNotUsed(const matrix<int>& m,const vec
             if(Tacts[i]<mForTmp[i][j]) Tacts[i] = mForTmp[i][j]; //он не используется
     return Tacts;
 }
+
+vector<int> CountTactsWhichDocumentWasInSystem(const vector<int>& OrderElementsOfSystem, const vector<int>& TactNumberAfterWhichDocumentIsNotUsed)
+{
+    int N = TactNumberAfterWhichDocumentIsNotUsed.size();
+    vector<int> rez(N);
+
+    for(indexer i=0;i<N;i++)
+        rez[i] = OrderElementsOfSystem[i]-TactNumberAfterWhichDocumentIsNotUsed[i];
+
+    return rez;
+}
+
 ////////////////////////////////////////////////////////////////
 
 
