@@ -28,9 +28,37 @@ matrix<int> MplusM(const matrix<int>&, const matrix<int>&);
 //Возвращает матрицы минимальных путей из I в J
 matrix<int> minPaths(const matrix<int>& m);
 
+//Возвращает матрицы максимальных путей из I в J
+//matrix<int> maxPaths(const matrix<int>& m);
 
 ////////////////////////////////////////////////////////////////
 
+bool SystemIsOk(const matrix<int>& m)
+{
+    //все степени матрицы
+    vector<matrix<int>> stepsM = GetSteps(m);
+
+    //если на главной диагонали любой из стеней из матрицы
+    //будет не нулевой элемент - системам не корректна
+    for(indexer step=0;stepsM.size();step++)
+        for(indexer diagIndex = 0;diagIndex<stepsM.size;diagIndex++)
+            if(stepsM[step][diagIndex][diagIndex]!=0)
+                return false;
+
+    return true;
+}
+
+vector<int> OrderOfTheSystem(matrix<int> m)
+{
+    auto steps = GetSteps(m);
+
+    for(indexer step = 0;step<m.size();step++)
+    {
+
+
+    }
+
+}
 
 
 ////////////////////////////////////////////////////////////////
@@ -71,6 +99,26 @@ matrix<int> minPaths(const matrix<int>& m)
                     D[row][coll] = stepen+1;
     return D;
 }
+
+//Матрица минимальных путей графа
+//matrix<int> maxPaths(const matrix<int>& m)
+//{
+//    //кол-во вершин
+//    indexer N = m.size();
+//    //Создание копии матрицы
+//    matrix<int> D(m);
+
+//    //Получение всех степеней этой матрицы
+//    vector<matrix<int>> PN = GetSteps(m);
+
+//    //Формирование матрицы минимальных путей
+//    for(indexer stepen=0;stepen<N;stepen++)
+//        for(indexer row=0;row<N;row++)
+//            for(indexer coll=0;coll<N;coll++)
+//                if((row!=coll)&(D[row][coll]==0)&(PN[stepen][row][coll]>D[row][coll]))
+//                    D[row][coll] = stepen+1;
+//    return D;
+//}
 
 matrix<int> MplusM(const matrix<int> & a, const matrix<int> & b)
 {
