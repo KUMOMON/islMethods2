@@ -42,8 +42,8 @@ bool SystemIsOk(const matrix<int>& m)
 
     //если на главной диагонали любой из стеней из матрицы
     //будет не нулевой элемент - системам не корректна
-    for(indexer step=0;stepsM.size();step++)
-        for(indexer diagIndex = 0;diagIndex<stepsM.size;diagIndex++)
+    for(indexer step=0;step<stepsM.size();step++)
+        for(indexer diagIndex = 0;diagIndex<stepsM.size();diagIndex++)
             if(stepsM[step][diagIndex][diagIndex]!=0)
                 return false;
 
@@ -56,9 +56,9 @@ vector<int> OrderElementsOfSystem(const matrix<int>& m)
     vector<int>pi(N);
     vector<bool> compliteWork(N);//используется для обхода обработки j-ых определенных элементов
 
-    for(int j=0;j<N;j++){//исключение из обработки столбцы изначально имеющие все нули
+    for(indexer j=0;j<N;j++){//исключение из обработки столбцы изначально имеющие все нули
         int sum = 0;
-        for(int i=0;i<N;i++)
+        for(indexer i=0;i<N;i++)
             if(m[i][j]!=0)
                 sum+=m[i][j];
 
@@ -68,14 +68,14 @@ vector<int> OrderElementsOfSystem(const matrix<int>& m)
 
     vector<matrix<int>> steps = GetSteps(m);
 
-    for(indexer step = 0;j<N-1;step++){//цикл по документам(столбцам) pj
+    for(indexer step = 0;step<N-1;step++){//цикл по документам(столбцам) pj
         for(indexer j=0;j<N;j++)
             if(!pi[j]){//если порядок элемента неопределен
                 int sumCol = 0;            //сумма элементов j-ого столбца
                 int sumColNextStep = 0;    //сумма эл. по столбцу след. степени
                 for(indexer i = 0;i<N;i++){//индекс по строкам
                     sumCol+=steps[step][i][j];
-                    sumColNextStep[step+1][i][j];
+                    sumColNextStep+=steps[step+1][i][j];
                 }
 
                 if(sumCol>0&sumColNextStep!=0)
@@ -91,19 +91,19 @@ vector<int> OrderElementsOfSystem(const matrix<int>& m)
 
 inline int OrderOfSystem(const vector<int>& OrderElementsOfSystem)
 {
-    return max_element(OrderElementsOfSystem.begin(),OrderElementsOfSystem.end());
+    return *max_element(OrderElementsOfSystem.begin(),OrderElementsOfSystem.end());
 }
 
 vector<int> TactNumberAfterWhichDocumentIsNotUsed(const matrix<int>& m,const vector<int>& OrderElementsOfSystem)
 {
     int N =m.size();
     vector<int> Tacts(m.size());    //результирующий массив тактов
-    matrix mForTmp(m);              //промежутачная таблица для вычисления тактов
+    matrix<int> mForTmp(m);              //промежутачная таблица для вычисления тактов
 
 
     for(int j=0;j<N;j++)        //заменяем значения матрицы отличные от нуля
         for(int i=0;i<N;i++)    //на порядок для каждого отдельного элемента
-            if(mForTmp[i][j]!=0) mForTmp = OrderElementsOfSystem[j];
+            if(mForTmp[i][j]!=0) mForTmp[i][j] = OrderElementsOfSystem[j];
 
     for(int i = 0;i<N;i++)      //найдем максимальный порядок в строке
         for(int j=0;j<N;j++)    //это и будет номер такта, после которого
@@ -124,7 +124,7 @@ vector<int> CountTactsWhichDocumentWasInSystem(const vector<int>& OrderElementsO
 
 vector<vector<int>> DistributionOfDocumentsByLevels(const vector<int>& OrderElementsOfSystem)
 {
-    vector<vector<int>> levelsOfDocuments(max_element(OrderElementsOfSystem.begin(),OrderElementsOfSystem.end())+1);
+    vector<vector<int>> levelsOfDocuments(*max_element(OrderElementsOfSystem.begin(),OrderElementsOfSystem.end())+1);
 
     for(vector<int> i:levelsOfDocuments)
         i = vector<int>();

@@ -34,8 +34,8 @@ void SafeResultInExcellFile(vector<long double>,bool,vector<long double>,vector<
 
 int main()
 {
-    //matrix<int> m = GetTestGraph(0);
-    matrix<int> m = LoadMatrixFromFile();
+    matrix<int> m = GetTestGraph(0);
+    //matrix<int> m = LoadMatrixFromFile();
     cout<<endl;
     if(m.size()>0)
         AnalysSystem(m);
@@ -66,7 +66,27 @@ void AnalysSystem(const matrix<int>& m)
 
     if(systemIsOk)
     {
+        cout<<"V grafe otsutstvuyut kontura"<<endl;
+        vector<int> pi = OrderElementsOfSystem(m);
+        vector<int> TctNumAftDocNotUsed = TactNumberAfterWhichDocumentIsNotUsed(m,pi);
+        vector<int> CntTctDocWasInSystem = CountTactsWhichDocumentWasInSystem(pi, TctNumAftDocNotUsed);
 
+        cout<<setw(4)<<"pi,"<<setw(3)<<"ti,"<<setw(4)<<"t2"<<endl;
+        for(int i = 0;i<pi.size();i++)
+            cout<<setw(4)<<pi[i]<<setw(3)<<TctNumAftDocNotUsed[i]<<setw(4)<<CntTctDocWasInSystem[i]<<endl;
+
+        vector<vector<int>>lvlsDocs = DistributionOfDocumentsByLevels(pi);
+        cout<<"Razbienie po urovnyam:"<<endl;
+        for(int i=0; i<lvlsDocs.size();i++)
+        {
+            cout<<i<<':';
+            for(int j =0;j<lvlsDocs[i].size();j++)
+                cout<<' '<<lvlsDocs[i][j];
+            cout<<endl;
+        }
+    }
+    else {
+        cout<<"V grafe est' kontura"<<endl;
     }
 }
 
@@ -113,7 +133,7 @@ matrix<int> LoadMatrixFromFile()
 //Возвращает тестовые графы:
 //без контуров(0),с контурами(1),с изолированными выршинами(2),с дублированными связями(3)
 //с контурами, изолированными вершинами и дублированными связями(4)
-matrix<int> GetTestGraph(const int numberTestGraph)
+matrix<int> GetTestGraph(int numberTestGraph)
 {
     if(numberTestGraph<0 | numberTestGraph>4)
         numberTestGraph = 0;
