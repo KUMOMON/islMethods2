@@ -50,7 +50,7 @@ bool SystemIsOk(const matrix<int>& m)
     return true;
 }
 
-vector<int> OrderElementsOfSystem(matrix<int> m)
+vector<int> OrderElementsOfSystem(const matrix<int>& m)
 {  
     indexer N = m.size();
     vector<int>pi(N);
@@ -89,11 +89,27 @@ vector<int> OrderElementsOfSystem(matrix<int> m)
 
 }
 
-inline int OrderOfSystem(vector<int> OrderElementsOfSystem)
+inline int OrderOfSystem(const vector<int>& OrderElementsOfSystem)
 {
     return max_element(OrderElementsOfSystem.begin(),OrderElementsOfSystem.end());
 }
 
+vector<int> TactNumberAfterWhichDocumentIsNotUsed(const matrix<int>& m,const vector<int>& OrderElementsOfSystem)
+{
+    int N =m.size();
+    vector<int> Tacts(m.size());    //результирующий массив тактов
+    matrix mForTmp(m);              //промежутачная таблица для вычисления тактов
+
+
+    for(int j=0;j<N;j++)        //заменяем значения матрицы отличные от нуля
+        for(int i=0;i<N;i++)    //на порядок для каждого отдельного элемента
+            if(mForTmp[i][j]!=0) mForTmp = OrderElementsOfSystem[j];
+
+    for(int i = 0;i<N;i++)      //найдем максимальный порядок в строке
+        for(int j=0;j<N;j++)    //это и будет номер такта, после которого
+            if(Tacts[i]<mForTmp[i][j]) Tacts[i] = mForTmp[i][j]; //он не используется
+    return Tacts;
+}
 ////////////////////////////////////////////////////////////////
 
 
