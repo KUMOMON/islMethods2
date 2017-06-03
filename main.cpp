@@ -34,8 +34,8 @@ void SafeResultInExcellFile(vector<long double>,bool,vector<long double>,vector<
 
 int main()
 {
-    matrix<int> m = GetTestGraph(0);
-    //matrix<int> m = LoadMatrixFromFile();
+    //matrix<int> m = GetTestGraph(0);
+    matrix<int> m = LoadMatrixFromFile();
     cout<<endl;
     if(m.size()>0)
         AnalysSystem(m);
@@ -110,12 +110,9 @@ matrix<int> LoadMatrixFromFile()
 
 }
 
-//Возвращает тестовые графы
-//0 - граф без контуров
-//1 - граф с контурами
-//2 - граф с изолированными выршинами
-//3 - граф с дублированными связями
-//4 - граф с контурами, изолированными вершинами и дублированными связями
+//Возвращает тестовые графы:
+//без контуров(0),с контурами(1),с изолированными выршинами(2),с дублированными связями(3)
+//с контурами, изолированными вершинами и дублированными связями(4)
 matrix<int> GetTestGraph(const int numberTestGraph)
 {
     if(numberTestGraph<0 | numberTestGraph>4)

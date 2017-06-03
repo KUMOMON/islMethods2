@@ -1,5 +1,7 @@
 #include <vector>       //модуль расширяемых массивов
 #include <math.h>       //модуль математических функций
+#include <array>
+#include <algorithm>
 #include <c++/limits>   //для извлечения границ типов
 
 namespace islMethods {
@@ -48,18 +50,49 @@ bool SystemIsOk(const matrix<int>& m)
     return true;
 }
 
-vector<int> OrderOfTheSystem(matrix<int> m)
-{
-    auto steps = GetSteps(m);
+vector<int> OrderElementsOfSystem(matrix<int> m)
+{  
+    indexer N = m.size();
+    vector<int>pi(N);
+    vector<bool> compliteWork(N);//используется для обхода обработки j-ых определенных элементов
 
-    for(indexer step = 0;step<m.size();step++)
-    {
+    for(int j=0;j<N;j++){//исключение из обработки столбцы изначально имеющие все нули
+        int sum = 0;
+        for(int i=0;i<N;i++)
+            if(m[i][j]!=0)
+                sum+=m[i][j];
 
-
+        if(sum==0)
+            compliteWork[j] = true;
     }
+
+    vector<matrix<int>> steps = GetSteps(m);
+
+    for(indexer step = 0;j<N-1;step++){//цикл по документам(столбцам) pj
+        for(indexer j=0;j<N;j++)
+            if(!pi[j]){//если порядок элемента неопределен
+                int sumCol = 0;            //сумма элементов j-ого столбца
+                int sumColNextStep = 0;    //сумма эл. по столбцу след. степени
+                for(indexer i = 0;i<N;i++){//индекс по строкам
+                    sumCol+=steps[step][i][j];
+                    sumColNextStep[step+1][i][j];
+                }
+
+                if(sumCol>0&sumColNextStep!=0)
+                {
+                    pi[j]=step+1;
+                    compliteWork[j] = true;
+                }
+            }
+    }
+    return pi;
 
 }
 
+inline int OrderOfSystem(vector<int> OrderElementsOfSystem)
+{
+    return max_element(OrderElementsOfSystem.begin(),OrderElementsOfSystem.end());
+}
 
 ////////////////////////////////////////////////////////////////
 
