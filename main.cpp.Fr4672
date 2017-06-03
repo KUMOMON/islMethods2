@@ -15,10 +15,12 @@
 
 using namespace std;
 
+///////////////////////////////////////ПСЕВДОНИМЫ/////////////////////////////////////////////////////////////////////
 //определение матрицы
 template<typename T>
 using matrix = vector<vector<T>>;
 
+///////////////////////////////////////ОБЪЯВЛЕНИЯ//////////////////////////////////////////////////////////////////////
 
 matrix<int> GetSomeMatrixByIndex(const unsigned short int);     //выдает тестовую матрицу смежности графа (1-6)
 void ShowMatrixToMonitor(const matrix<int>&) noexcept;          //выводит матрицу на экран
@@ -28,6 +30,7 @@ matrix<int> LoadMatrixFromFile();                               //загружа
 //выполняет сохранение результатов исследования в файл
 void SafeResultInExcellFile(vector<long double>,bool,vector<long double>,vector<long double>);
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main()
 {
@@ -39,8 +42,6 @@ int main()
     else
         cout<<"file not found or matrix not exist";
     system("pause");
-
-
     return 0;
 }
 
@@ -61,7 +62,12 @@ void AnalysSystem(const matrix<int>& m)
     using namespace islMethods;
 
     //проверяем наличие контуров (если есть - это ошибка информационного графа)
+    bool systemIsOk = SystemIsOk(m);
 
+    if(systemIsOk)
+    {
+
+    }
 }
 
 matrix<int> LoadMatrixFromFile()
@@ -102,4 +108,32 @@ matrix<int> LoadMatrixFromFile()
     book->release();
     return _matrix;
 
+}
+
+//Возвращает тестовые графы
+matrix<int> GetTestGraph(const int numberTestGraph)
+{
+    if(numberTestGraph<0 | numberTestGraph>1)
+        numberTestGraph = 0;
+
+    matrix<int> m;
+
+    switch (numberTestGraph) {
+    case 0:
+        m = {
+            {0,1,1,0,0,0,0,0,0,0},
+            {0,0,0,1,1,0,0,0,0,0},
+            {0,0,0,0,0,1,0,0,0,0},
+            {0,0,0,0,0,0,1,0,0,0},
+            {0,0,0,0,0,0,0,1,1,0},
+            {0,0,0,0,0,0,0,0,0,1},
+            {0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0}
+        };
+        return
+        break;
+    default:
+        break;
+    }
 }
