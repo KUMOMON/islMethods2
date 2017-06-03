@@ -122,6 +122,19 @@ vector<int> CountTactsWhichDocumentWasInSystem(const vector<int>& OrderElementsO
     return rez;
 }
 
+vector<vector<int>> DistributionOfDocumentsByLevels(const vector<int>& OrderElementsOfSystem)
+{
+    vector<vector<int>> levelsOfDocuments(max_element(OrderElementsOfSystem.begin(),OrderElementsOfSystem.end())+1);
+
+    for(vector<int> i:levelsOfDocuments)
+        i = vector<int>();
+
+    for(indexer i;i<OrderElementsOfSystem.size();i++)
+        levelsOfDocuments[OrderElementsOfSystem[i]].push_back(i);
+
+    return levelsOfDocuments;
+}
+
 ////////////////////////////////////////////////////////////////
 
 

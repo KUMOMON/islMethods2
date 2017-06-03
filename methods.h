@@ -40,6 +40,9 @@ using matrix = vector<vector<T>>;
 
    //определяет для каждого документа число тактов, в течении которых он находился в системе
    vector<int> CountTactsWhichDocumentWasInSystem(const vector<int>& OrderElementsOfSystem, const vector<int>& TactNumberAfterWhichDocumentIsNotUsed);
+
+   //разбиение документов по уровням
+   vector<vector<int>> DistributionOfDocumentsByLevels(const vector<int>& OrderElementsOfSystem);
 }
 
 

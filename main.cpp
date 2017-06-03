@@ -190,7 +190,8 @@ matrix<int> GetTestGraph(const int numberTestGraph)
             {0,0,0,0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0,0,0,0},
         };
+        break;
     }
 
-    return m
+    return m;
 }
