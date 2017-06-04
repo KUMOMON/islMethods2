@@ -72,15 +72,15 @@ void AnalysSystem(const matrix<int>& m)
         vector<int> CntTctDocWasInSystem = CountTactsWhichDocumentWasInSystem(pi, TctNumAftDocNotUsed);
 
         cout<<setw(4)<<"pi,"<<setw(3)<<"ti,"<<setw(4)<<"t2"<<endl;
-        for(int i = 0;i<pi.size();i++)
-            cout<<setw(4)<<pi[i]<<setw(3)<<TctNumAftDocNotUsed[i]<<setw(4)<<CntTctDocWasInSystem[i]<<endl;
+        for(unsigned int i = 0;i<pi.size();i++)
+            cout<<setw(3)<<pi[i]<<setw(4)<<TctNumAftDocNotUsed[i]<<setw(4)<<CntTctDocWasInSystem[i]<<endl;
 
         vector<vector<int>>lvlsDocs = DistributionOfDocumentsByLevels(pi);
         cout<<"Razbienie po urovnyam:"<<endl;
-        for(int i=0; i<lvlsDocs.size();i++)
+        for(unsigned int i=0; i<lvlsDocs.size();i++)
         {
             cout<<i<<':';
-            for(int j =0;j<lvlsDocs[i].size();j++)
+            for(unsigned int j =0;j<lvlsDocs[i].size();j++)
                 cout<<' '<<lvlsDocs[i][j];
             cout<<endl;
         }
@@ -151,6 +151,7 @@ matrix<int> GetTestGraph(int numberTestGraph)
             {0,0,0,0,0,0,0,0,0,1},
             {0,0,0,0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0,0,0,0}
         };
         break;
@@ -169,6 +170,7 @@ matrix<int> GetTestGraph(int numberTestGraph)
             {0,0,0,0,0,0,0,0,1,0}
         };
         break;
+
     case 2:
         m={
             {0,1,1,0,0,0,0,0,0,0},

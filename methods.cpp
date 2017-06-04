@@ -70,7 +70,7 @@ vector<int> OrderElementsOfSystem(const matrix<int>& m)
 
     for(indexer step = 0;step<N-1;step++){//цикл по документам(столбцам) pj
         for(indexer j=0;j<N;j++)
-            if(!pi[j]){//если порядок элемента неопределен
+            if(!compliteWork[j]){//если порядок элемента неопределен
                 int sumCol = 0;            //сумма элементов j-ого столбца
                 int sumColNextStep = 0;    //сумма эл. по столбцу след. степени
                 for(indexer i = 0;i<N;i++){//индекс по строкам
@@ -78,7 +78,7 @@ vector<int> OrderElementsOfSystem(const matrix<int>& m)
                     sumColNextStep+=steps[step+1][i][j];
                 }
 
-                if(sumCol>0&sumColNextStep!=0)
+                if(sumCol>0&&sumColNextStep==0)
                 {
                     pi[j]=step+1;
                     compliteWork[j] = true;
@@ -96,28 +96,32 @@ inline int OrderOfSystem(const vector<int>& OrderElementsOfSystem)
 
 vector<int> TactNumberAfterWhichDocumentIsNotUsed(const matrix<int>& m,const vector<int>& OrderElementsOfSystem)
 {
-    int N =m.size();
-    vector<int> Tacts(m.size());    //результирующий массив тактов
+    indexer N =m.size();
+    vector<int> tacts(m.size());    //результирующий массив тактов
     matrix<int> mForTmp(m);              //промежутачная таблица для вычисления тактов
 
-
-    for(int j=0;j<N;j++)        //заменяем значения матрицы отличные от нуля
-        for(int i=0;i<N;i++)    //на порядок для каждого отдельного элемента
+    for(indexer j=0;j<N;j++)        //заменяем значения матрицы отличные от нуля
+        for(indexer i=0;i<N;i++)    //на порядок для каждого отдельного элемента
             if(mForTmp[i][j]!=0) mForTmp[i][j] = OrderElementsOfSystem[j];
 
-    for(int i = 0;i<N;i++)      //найдем максимальный порядок в строке
-        for(int j=0;j<N;j++)    //это и будет номер такта, после которого
-            if(Tacts[i]<mForTmp[i][j]) Tacts[i] = mForTmp[i][j]; //он не используется
-    return Tacts;
+    for(indexer i = 0;i<N;i++)      //найдем максимальный порядок в строке
+        for(indexer j=0;j<N;j++)    //это и будет номер такта, после которого
+            if(tacts[i]<mForTmp[i][j]) tacts[i] = mForTmp[i][j]; //он не используется
+
+    for(indexer i=0;i<N;i++)
+        if(*max_element(m[i].begin(),m[i].end())==0)
+            tacts[i] = *max_element(tacts.begin(),tacts.end());
+
+    return tacts;
 }
 
 vector<int> CountTactsWhichDocumentWasInSystem(const vector<int>& OrderElementsOfSystem, const vector<int>& TactNumberAfterWhichDocumentIsNotUsed)
 {
-    int N = TactNumberAfterWhichDocumentIsNotUsed.size();
+    indexer N = TactNumberAfterWhichDocumentIsNotUsed.size();
     vector<int> rez(N);
 
     for(indexer i=0;i<N;i++)
-        rez[i] = OrderElementsOfSystem[i]-TactNumberAfterWhichDocumentIsNotUsed[i];
+        rez[i] = abs(TactNumberAfterWhichDocumentIsNotUsed[i]-OrderElementsOfSystem[i]);
 
     return rez;
 }
@@ -129,7 +133,7 @@ vector<vector<int>> DistributionOfDocumentsByLevels(const vector<int>& OrderElem
     for(vector<int> i:levelsOfDocuments)
         i = vector<int>();
 
-    for(indexer i;i<OrderElementsOfSystem.size();i++)
+    for(indexer i=0;i<OrderElementsOfSystem.size();i++)
         levelsOfDocuments[OrderElementsOfSystem[i]].push_back(i);
 
     return levelsOfDocuments;
