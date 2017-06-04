@@ -105,6 +105,21 @@ void AnalysSystem(const matrix<int>& m)
         vector<vector<int>> allPaths = GetAllPaths(m);
         ShowMatrixToMonitor(allPaths);
 
+        cout<<"Dokumenty, uchavstvuyuschie v obrazovanii:"<<endl;
+        map<int,vector<int>> numbDocInvolvInCreat
+                = GetNumbersDocumentsInvolvedInCreation(m);
+
+        for(auto iter = numbDocInvolvInCreat.begin();iter!=numbDocInvolvInCreat.end();++iter)
+        {
+            cout<<(*iter).first<<":";
+            vector<int> n((*iter).second);
+            for(int num:n)
+                cout<<" "<<num;
+            cout<<endl;
+
+        }
+
+
     }
     else {       
         cout<<"Harakteristiki nel'zya poluchit'"<<endl

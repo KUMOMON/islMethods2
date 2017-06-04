@@ -3,7 +3,8 @@
 #include <array>
 #include <algorithm>
 #include <c++/limits>   //для извлечения границ типов
-#include <set>          //для хранения множеств
+#include <set>          //для хранения множества документов в системе
+#include <map>          //для хранения пар документ - его прорадители
 
 namespace islMethods {
 
@@ -234,6 +235,37 @@ matrix<int> GetAllPaths(const matrix<int>& m)
                     rez[i][j]+=step[stepI][i][j];
     return rez;
 }
+
+map<int,vector<int>> GetNumbersDocumentsInvolvedInCreation(const matrix<int>& m)
+{
+    indexer N = m.size();
+    matrix<int> allPtahs =GetAllPaths(m);
+    vector<int> initVertices = GetInitialVertices(m);
+    vector<bool> requiredDocDrop(m.size());
+    map<int,vector<int>> pairsDocChildDocParents;
+
+    for(int num:initVertices)
+        requiredDocDrop[num] = true;
+
+    for(int j=0;j<N;j++)
+    {
+        if(!requiredDocDrop[j])
+        {
+            vector<int> parentsDoc;
+            for(int i=0;i<N;i++)
+                if(allPtahs[i][j]!=0)
+                    parentsDoc.push_back(i);
+
+            if(parentsDoc.size()>0)
+            {
+                pairsDocChildDocParents.insert(pair<int,vector<int>>(j,parentsDoc));
+            }
+        }
+    }
+
+    return pairsDocChildDocParents;
+}
+
 
 ////////////////////////////////////////////////////////////////
 

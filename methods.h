@@ -1,4 +1,5 @@
 #include<vector>
+#include<map>
 
 /* About
  * Здесь представлен наобор методов
@@ -55,6 +56,8 @@ using matrix = vector<vector<T>>;
    //определяет число всевозможных путей
    matrix<int> GetAllPaths(const matrix<int>& m);
 
+   //получает списки документов, учаcтсвующих в образовании
+   map<int,vector<int>> GetNumbersDocumentsInvolvedInCreation(const matrix<int>& m);
 }
 
 
