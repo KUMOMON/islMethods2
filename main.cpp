@@ -34,7 +34,7 @@ void SafeResultInExcellFile(vector<long double>,bool,vector<long double>,vector<
 
 int main()
 {
-    matrix<int> m = GetTestGraph(0);
+    matrix<int> m = GetTestGraph(3);
     //matrix<int> m = LoadMatrixFromFile();
     cout<<endl;
     if(m.size()>0)
@@ -61,6 +61,9 @@ void AnalysSystem(const matrix<int>& m)
 {
     using namespace islMethods;
 
+       cout<<"Исследуемая матрица:"<<endl;
+       ShowMatrixToMonitor(m);
+
     //проверяем наличие контуров (если есть - это ошибка информационного графа)
     bool systemIsOk = SystemIsOk(m);
 
@@ -84,9 +87,66 @@ void AnalysSystem(const matrix<int>& m)
                 cout<<' '<<lvlsDocs[i][j];
             cout<<endl;
         }
+
+        vector<int> initVertices = GetInitialVertices(m);
+
+        cout<<"Ishodnye vershiny"<<endl;
+        for(int num:initVertices)
+            cout<<setw(3)<<num;
+        cout<<endl;
+
+        cout<<"Konechnye vershiny:"<<endl;
+        vector<int> endVertices = GetEndVertices(m);
+        for(int num:endVertices)
+            cout<<setw(3)<<num;
+        cout<<endl;
+
+        cout<<endl<<"Chislo vsevozmojnyh putei:"<<endl;
+        vector<vector<int>> allPaths = GetAllPaths(m);
+        ShowMatrixToMonitor(allPaths);
+
+        cout<<"Dokumenty, uchavstvuyuschie v obrazovanii:"<<endl;
+        map<int,vector<int>> numbDocInvolvInCreat
+                = GetNumbersDocumentsInvolvedInCreation(m);
+
+        for(auto iter = numbDocInvolvInCreat.begin();iter!=numbDocInvolvInCreat.end();++iter)
+        {
+            cout<<(*iter).first<<":";
+            vector<int> n((*iter).second);
+            for(int num:n)
+                cout<<" "<<num;
+            cout<<endl;
+
+        }
+
+
+        cout<<"Dokumenty, iz byl obrazovany:"<<endl;
+        map<int,vector<int>> childDoc
+                = GetChildDocuments(m);
+
+        for(auto iter = childDoc.begin();iter!=childDoc.end();++iter)
+        {
+            cout<<(*iter).first<<":";
+            vector<int> n((*iter).second);
+            for(int num:n)
+                cout<<" "<<num;
+            cout<<endl;
+        }
+
+
     }
-    else {
-        cout<<"V grafe est' kontura"<<endl;
+    else {       
+        cout<<"Harakteristiki nel'zya poluchit'"<<endl
+            <<"t.k. v grafe prisutstvuyut kontury"<<endl;
+
+        vector<vector<int>> StrngConnComp
+                =GetStronglyConnectedComponents(m);
+        cout<<endl<<"Sil'nye komponenty:"<<endl;
+
+        for(vector<int> v:StrngConnComp)
+            for(int num:v)
+                cout<<setw(3)<<num;
+        cout<<endl;
     }
 }
 
@@ -135,7 +195,7 @@ matrix<int> LoadMatrixFromFile()
 //с контурами, изолированными вершинами и дублированными связями(4)
 matrix<int> GetTestGraph(int numberTestGraph)
 {
-    if(numberTestGraph<0 | numberTestGraph>4)
+    if(numberTestGraph<0 || numberTestGraph>4)
         numberTestGraph = 0;
 
     matrix<int> m;
