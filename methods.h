@@ -46,6 +46,15 @@ using matrix = vector<vector<T>>;
    //возвращает наборы сильно связных компонент по матрице смежности
    vector<vector<int>> GetStronglyConnectedComponents(const matrix<int>&);
 
+   //исходные вершины
+   vector<int> GetInitialVertices(const matrix<int>& m);
+
+   //конечные вершины
+   vector<int> GetEndVertices(const matrix<int>& m);
+
+   //определяет число всевозможных путей
+   matrix<int> GetAllPaths(const matrix<int>& m);
+
 }
 
 

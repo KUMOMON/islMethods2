@@ -34,7 +34,7 @@ void SafeResultInExcellFile(vector<long double>,bool,vector<long double>,vector<
 
 int main()
 {
-    matrix<int> m = GetTestGraph(4);
+    matrix<int> m = GetTestGraph(0);
     //matrix<int> m = LoadMatrixFromFile();
     cout<<endl;
     if(m.size()>0)
@@ -61,6 +61,9 @@ void AnalysSystem(const matrix<int>& m)
 {
     using namespace islMethods;
 
+       cout<<"Исследуемая матрица:"<<endl;
+       ShowMatrixToMonitor(m);
+
     //проверяем наличие контуров (если есть - это ошибка информационного графа)
     bool systemIsOk = SystemIsOk(m);
 
@@ -84,6 +87,24 @@ void AnalysSystem(const matrix<int>& m)
                 cout<<' '<<lvlsDocs[i][j];
             cout<<endl;
         }
+
+        vector<int> initVertices = GetInitialVertices(m);
+
+        cout<<"Ishodnye vershiny"<<endl;
+        for(int num:initVertices)
+            cout<<setw(3)<<num;
+        cout<<endl;
+
+        cout<<"Konechnye vershiny:"<<endl;
+        vector<int> endVertices = GetEndVertices(m);
+        for(int num:endVertices)
+            cout<<setw(3)<<num;
+        cout<<endl;
+
+        cout<<endl<<"Chislo vsevozmojnyh putei:"<<endl;
+        vector<vector<int>> allPaths = GetAllPaths(m);
+        ShowMatrixToMonitor(allPaths);
+
     }
     else {       
         cout<<"Harakteristiki nel'zya poluchit'"<<endl
@@ -91,13 +112,12 @@ void AnalysSystem(const matrix<int>& m)
 
         vector<vector<int>> StrngConnComp
                 =GetStronglyConnectedComponents(m);
-        cout<<"Сильные компоненты:"<<endl;
+        cout<<endl<<"Sil'nye komponenty:"<<endl;
 
         for(vector<int> v:StrngConnComp)
             for(int num:v)
                 cout<<setw(3)<<num;
         cout<<endl;
-
     }
 }
 

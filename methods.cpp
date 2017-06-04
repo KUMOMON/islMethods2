@@ -186,6 +186,55 @@ vector<vector<int>> GetStronglyConnectedComponents(const matrix<int>& m)
     return strngConnComp;
 }
 
+vector<int> GetInitialVertices(const matrix<int>& m)
+{
+    indexer N = m.size();
+    vector<int> rez;
+    for(int i=0;i<N;i++)
+    {
+        int sumCol=0;
+        for(int j=0;j<N;j++)
+            sumCol+=m[j][i];
+
+        if(sumCol==0)
+            rez.push_back(i);
+    }
+    return rez;
+}
+
+vector<int> GetEndVertices(const matrix<int>& m)
+{
+    indexer N = m.size();
+    vector<int> rez;
+    for(int i=0;i<N;i++)
+    {
+        int sumLine=0;
+        for(int j=0;j<N;j++)
+            sumLine+=m[i][j];
+        if(sumLine==0)
+            rez.push_back(i);
+    }
+    return rez;
+}
+
+matrix<int> GetAllPaths(const matrix<int>& m)
+{
+    indexer N = m.size();
+    matrix<int> rez = m;
+
+    for(vector<int> i:rez)
+        i=vector<int>();
+
+    vector<matrix<int>>step = GetSteps(m);
+
+    for(indexer stepI=1;stepI<N;stepI++)
+        for(indexer i=0;i<N;i++)
+            for(indexer j = 0; j<N;j++)
+                if(step[stepI][i][j]!=0)
+                    rez[i][j]+=step[stepI][i][j];
+    return rez;
+}
+
 ////////////////////////////////////////////////////////////////
 
 
