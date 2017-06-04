@@ -34,7 +34,7 @@ void SafeResultInExcellFile(vector<long double>,bool,vector<long double>,vector<
 
 int main()
 {
-    matrix<int> m = GetTestGraph(3);
+    matrix<int> m = GetTestGraph(2);
     //matrix<int> m = LoadMatrixFromFile();
     cout<<endl;
     if(m.size()>0)
@@ -148,6 +148,13 @@ void AnalysSystem(const matrix<int>& m)
                 cout<<setw(3)<<num;
         cout<<endl;
     }
+
+    //оптимизация
+    cout<<"Optimizaciya:"<<endl;
+    string logOpt = "";
+    vector<vector<int>> opt1 = OptimizationGraph(m,logOpt);
+    cout<<logOpt;
+    ShowMatrixToMonitor(opt1);
 }
 
 matrix<int> LoadMatrixFromFile()

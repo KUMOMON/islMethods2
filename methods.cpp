@@ -1,10 +1,11 @@
 #include <vector>       //модуль расширяемых массивов
 #include <math.h>       //модуль математических функций
-#include <array>
-#include <algorithm>
+#include <array>        //?
+#include <algorithm>    //для поиска максимального элемента в векторе
 #include <c++/limits>   //для извлечения границ типов
 #include <set>          //для хранения множества документов в системе
 #include <map>          //для хранения пар документ - его прорадители
+#include <string>
 
 namespace islMethods {
 
@@ -29,8 +30,8 @@ matrix<int> MplusM(const matrix<int>&, const matrix<int>&);
 //Возвращает матрицы минимальных путей из I в J
 matrix<int> minPaths(const matrix<int>& m);
 
-//Возвращает матрицы максимальных путей из I в J
-//matrix<int> maxPaths(const matrix<int>& m);
+//удаляет изолированные элементы графа
+matrix<int>DeleteIsolatedVertices(const matrix<int>& m, string& logMessage);
 
 ////////////////////////////////////////////////////////////////
 
@@ -296,11 +297,14 @@ map<int,vector<int>> GetChildDocuments(const matrix<int>& m)
     return pairsDocParentDocsChild;
 }
 
+matrix<int> OptimizationGraph(const matrix<int>& m, string& logMessages)
+{
+    logMessages = "";
+    return DeleteIsolatedVertices(m,logMessages);
+}
 
-////////////////////////////////////////////////////////////////
+/////////////////ВСПОМОГАТЕЛЬНЫЕ_МЕТОДЫ_ДЛЯ_РАБОТЫ_С_МАТРИЦАМИ_ГРАФОВ///////////////////
 
-
-//Матрица минимальных путей графа
 matrix<int> minPaths(const matrix<int>& m)
 {
     //кол-во вершин
@@ -372,6 +376,61 @@ vector<matrix<int>> GetSteps(const matrix<int>& m)
     }
 
     return rez;
+}
+
+/////////////////ВСПОМОГАТЕЛЬНЫЕ_МЕТОДЫ_ДЛЯ_ОПТИМИЗАЦИИ_ГРАФОВ/////////////////////////
+
+matrix<int>DeleteIsolatedVertices(const matrix<int>& m, string& logMessage)
+{
+    int N = m.size();
+    set<int> toDelete;//список вершин на удаление
+
+    for(int i=0;i<N;i++)
+    {
+        int sumValsLine =0;
+        int sumValsCol =0;
+        for(int j=0;j<N;j++)
+        {
+            sumValsLine+=m[i][j];
+            sumValsCol+=m[j][i];
+        }
+
+        if(sumValsCol==0&&sumValsLine==0)
+            toDelete.insert(i);
+    }
+    logMessage+="\nNedostijimye vershiny ";
+    logMessage+=((toDelete.empty())?"otsutstvuyut.":":");
+
+    if(toDelete.empty())
+        return m;
+
+    logMessage+='\n';
+    for(auto iter = toDelete.begin();iter!=toDelete.end();++iter)
+    {
+        int num = *iter;
+        logMessage+=" "+std::to_string(num);
+
+    }
+    logMessage+='\n';
+
+
+    //создание матрицы под оптимизированный граф
+    matrix<int> optimalMatrix;
+
+    for(int i=0;i<N;i++)
+        if(toDelete.find(i)==toDelete.end())
+        {
+            vector<int>tmp;
+            for(int j=0;j<N;j++)
+                if(toDelete.find(j)==toDelete.end())
+                    tmp.push_back(m[i][j]);
+
+            if(tmp.size()>0)
+                optimalMatrix.push_back(tmp);
+        }
+
+    logMessage+="Izolirovannye tochki isklyucheny. \n";
+    return optimalMatrix;
 }
 
 }

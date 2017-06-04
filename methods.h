@@ -61,6 +61,10 @@ using matrix = vector<vector<T>>;
 
    //получает списки документов, в образовании которых участвовал документ
    map<int,vector<int>> GetChildDocuments(const matrix<int>& m);
+
+   //проводит оптимизацию графа, если это необходимо.
+   //сообщения оптимизатора возвращает вторым параметром
+   matrix<int> OptimizationGraph(const matrix<int>&, string&);
 }
 
 
