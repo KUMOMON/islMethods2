@@ -58,6 +58,9 @@ using matrix = vector<vector<T>>;
 
    //получает списки документов, учаcтсвующих в образовании
    map<int,vector<int>> GetNumbersDocumentsInvolvedInCreation(const matrix<int>& m);
+
+   //получает списки документов, в образовании которых участвовал документ
+   map<int,vector<int>> GetChildDocuments(const matrix<int>& m);
 }
 
 

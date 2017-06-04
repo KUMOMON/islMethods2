@@ -34,7 +34,7 @@ void SafeResultInExcellFile(vector<long double>,bool,vector<long double>,vector<
 
 int main()
 {
-    matrix<int> m = GetTestGraph(0);
+    matrix<int> m = GetTestGraph(3);
     //matrix<int> m = LoadMatrixFromFile();
     cout<<endl;
     if(m.size()>0)
@@ -117,6 +117,20 @@ void AnalysSystem(const matrix<int>& m)
                 cout<<" "<<num;
             cout<<endl;
 
+        }
+
+
+        cout<<"Dokumenty, iz byl obrazovany:"<<endl;
+        map<int,vector<int>> childDoc
+                = GetChildDocuments(m);
+
+        for(auto iter = childDoc.begin();iter!=childDoc.end();++iter)
+        {
+            cout<<(*iter).first<<":";
+            vector<int> n((*iter).second);
+            for(int num:n)
+                cout<<" "<<num;
+            cout<<endl;
         }
 
 

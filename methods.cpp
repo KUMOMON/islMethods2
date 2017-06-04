@@ -266,6 +266,36 @@ map<int,vector<int>> GetNumbersDocumentsInvolvedInCreation(const matrix<int>& m)
     return pairsDocChildDocParents;
 }
 
+map<int,vector<int>> GetChildDocuments(const matrix<int>& m)
+{
+    indexer N = m.size();
+    matrix<int> allPtahs =GetAllPaths(m);
+    vector<int> endVertices = GetEndVertices(m);
+    vector<bool> requiredDocDrop(m.size());
+    map<int,vector<int>> pairsDocParentDocsChild;
+
+    for(int num:endVertices)
+        requiredDocDrop[num] = true;
+
+    for(int i=0;i<N;i++)
+    {
+        if(!requiredDocDrop[i])
+        {
+            vector<int> childDocs;
+            for(int j=0;j<N;j++)
+                if(allPtahs[i][j]!=0)
+                    childDocs.push_back(j);
+
+            if(childDocs.size()>0)
+            {
+                pairsDocParentDocsChild.insert(pair<int,vector<int>>(i,childDocs));
+            }
+        }
+    }
+
+    return pairsDocParentDocsChild;
+}
+
 
 ////////////////////////////////////////////////////////////////
 
