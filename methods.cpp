@@ -3,6 +3,7 @@
 #include <array>
 #include <algorithm>
 #include <c++/limits>   //для извлечения границ типов
+#include <set>          //для хранения множеств
 
 namespace islMethods {
 
@@ -17,9 +18,6 @@ using indexer = unsigned int;
 
 //Возвращает все степени матрицы смежности
 vector<matrix<int>> GetSteps(const matrix<int>&);
-
-//структурная близость Q
-int StructProximity(const matrix<int>&);
 
 //Умножает одну матрицу на другую
 matrix<int> MxM(const matrix<int>&,const matrix<int>&);
@@ -139,24 +137,57 @@ vector<vector<int>> DistributionOfDocumentsByLevels(const vector<int>& OrderElem
     return levelsOfDocuments;
 }
 
+vector<vector<int>> GetStronglyConnectedComponents(const matrix<int>& m)
+{
+    matrix<int> pats=minPaths(m);       //для определения существояания пути в графе
+    indexer N = pats.size();
+    vector<vector<int>> strngConnComp;  //вектор связных компонент
+    set<int> numOfElemGraph;            //множество вершин
+
+    //заполняем множество
+    for(indexer i = 0;i<N;i++)
+        numOfElemGraph.insert(i);
+
+    indexer i=0;//начинаем поиск с 0 элемента
+    do//ищем сильно связные компоненты
+    {
+        i = *numOfElemGraph.begin();
+
+        vector<bool>R(N); //достижимость вершин из i | ->
+        vector<bool>Q(N); //достижимость вершины i из других | <-
+        vector<bool>V(N); //сильносвязный граф
+
+        for(indexer k = 0;k<N;k++)
+            if(i!=k)
+            {
+                R[k]=(pats[i][k]!=0);
+                Q[k]=(pats[k][i]!=0);
+            }
+
+        for(indexer k = 0;k<N;k++)
+            V[k]=R[k]&Q[k];
+
+        vector<int> tmp(0);     //запоминаем получившуюся компоненту в tmp
+        numOfElemGraph.erase(i);
+        tmp.push_back(i);
+        for(int k = 0;k<N;k++)
+            if(V[k])
+            {
+                numOfElemGraph.erase(k);
+                tmp.push_back(k);
+            }
+        if(tmp.size()>1)
+        strngConnComp.push_back(tmp);
+
+    }
+    while (!numOfElemGraph.empty());
+
+
+    return strngConnComp;
+}
+
 ////////////////////////////////////////////////////////////////
 
-
-int StructProximity(const matrix<int>& m)
-{
-    //кол-во вершин
-    indexer N = m.size();
-
-    //Создание копии матрицы
-    matrix<int> D = minPaths(m);
-
-    int Q = 0;              //структурная близость
-    for(indexer pointI=0;pointI<N;pointI++)
-        for(indexer pointJ=0;pointJ<N;pointJ++)
-            if(pointI!=pointJ) Q+=D[pointI][pointJ];
-
-    return Q;
-}
 
 //Матрица минимальных путей графа
 matrix<int> minPaths(const matrix<int>& m)
@@ -176,11 +207,6 @@ matrix<int> minPaths(const matrix<int>& m)
                 if((D[row][coll]==0)&(PN[stepen][row][coll]>0)&(row!=coll))
                     D[row][coll] = stepen+1;
     return D;
-}
-
-vector<vector<int>> GetStronglySonnectedComponents()
-{
-
 }
 
 matrix<int> MplusM(const matrix<int> & a, const matrix<int> & b)

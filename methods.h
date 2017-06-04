@@ -42,6 +42,10 @@ using matrix = vector<vector<T>>;
 
    //разбиение документов по уровням
    vector<vector<int>> DistributionOfDocumentsByLevels(const vector<int>& OrderElementsOfSystem);
+
+   //возвращает наборы сильно связных компонент по матрице смежности
+   vector<vector<int>> GetStronglyConnectedComponents(const matrix<int>&);
+
 }
 
 

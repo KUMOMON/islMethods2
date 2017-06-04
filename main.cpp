@@ -34,7 +34,7 @@ void SafeResultInExcellFile(vector<long double>,bool,vector<long double>,vector<
 
 int main()
 {
-    matrix<int> m = GetTestGraph(0);
+    matrix<int> m = GetTestGraph(4);
     //matrix<int> m = LoadMatrixFromFile();
     cout<<endl;
     if(m.size()>0)
@@ -85,9 +85,19 @@ void AnalysSystem(const matrix<int>& m)
             cout<<endl;
         }
     }
-    else {
+    else {       
         cout<<"Harakteristiki nel'zya poluchit'"<<endl
-            <"t.k. v grafe prisutstvuyut kontury";
+            <<"t.k. v grafe prisutstvuyut kontury"<<endl;
+
+        vector<vector<int>> StrngConnComp
+                =GetStronglyConnectedComponents(m);
+        cout<<"Сильные компоненты:"<<endl;
+
+        for(vector<int> v:StrngConnComp)
+            for(int num:v)
+                cout<<setw(3)<<num;
+        cout<<endl;
+
     }
 }
 
