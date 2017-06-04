@@ -86,7 +86,8 @@ void AnalysSystem(const matrix<int>& m)
         }
     }
     else {
-        cout<<"V grafe est' kontura"<<endl;
+        cout<<"Harakteristiki nel'zya poluchit'"<<endl
+            <"t.k. v grafe prisutstvuyut kontury";
     }
 }
 
@@ -135,7 +136,7 @@ matrix<int> LoadMatrixFromFile()
 //с контурами, изолированными вершинами и дублированными связями(4)
 matrix<int> GetTestGraph(int numberTestGraph)
 {
-    if(numberTestGraph<0 | numberTestGraph>4)
+    if(numberTestGraph<0 || numberTestGraph>4)
         numberTestGraph = 0;
 
     matrix<int> m;

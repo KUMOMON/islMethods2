@@ -178,25 +178,10 @@ matrix<int> minPaths(const matrix<int>& m)
     return D;
 }
 
-//Матрица минимальных путей графа
-//matrix<int> maxPaths(const matrix<int>& m)
-//{
-//    //кол-во вершин
-//    indexer N = m.size();
-//    //Создание копии матрицы
-//    matrix<int> D(m);
+vector<vector<int>> GetStronglySonnectedComponents()
+{
 
-//    //Получение всех степеней этой матрицы
-//    vector<matrix<int>> PN = GetSteps(m);
-
-//    //Формирование матрицы минимальных путей
-//    for(indexer stepen=0;stepen<N;stepen++)
-//        for(indexer row=0;row<N;row++)
-//            for(indexer coll=0;coll<N;coll++)
-//                if((row!=coll)&(D[row][coll]==0)&(PN[stepen][row][coll]>D[row][coll]))
-//                    D[row][coll] = stepen+1;
-//    return D;
-//}
+}
 
 matrix<int> MplusM(const matrix<int> & a, const matrix<int> & b)
 {
